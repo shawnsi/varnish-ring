@@ -2,3 +2,4 @@
 - hosts: localhost
   roles:
     - { role: serf, ec2_asg: yes }
+    - role: nginx
