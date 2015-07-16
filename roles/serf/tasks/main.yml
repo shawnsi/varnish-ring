@@ -1,0 +1,32 @@
+---
+- name: Download serf archive
+  get_url: url=https://dl.bintray.com/mitchellh/serf/0.6.4_linux_amd64.zip dest=/tmp/serf.zip
+
+- name: Install serf
+  unarchive: copy=no src=/tmp/serf.zip dest=/usr/local/bin
+
+- name: Create serf configuration directory
+  file: state=directory path=/etc/serf mode=0700
+
+- name: Install serf init script
+  get_url: url=https://raw.githubusercontent.com/hashicorp/serf/master/ops-misc/serf.sysv.init dest=/etc/init.d/serf mode=0775
+
+- name: Install serf event handler
+  copy: src=handler.sh dest=/etc/serf/handler.sh mode=0775
+  notify: Reload Serf
+
+- name: Configure serf event handler
+  lineinfile: create=yes state=present dest=/etc/serf/handler.json line={\"event_handlers\":[\"/etc/serf/handler.sh\"]}
+  notify: Reload Serf
+
+- name: Install serf ec2 peer script
+  copy: src=peers.py dest=/etc/serf/peers.py mode=0775
+  when: ec2_asg
+
+- name: Configure serf ec2 peers
+  shell: python /etc/serf/peers.py > /etc/serf/peers.json
+  when: ec2_asg
+  notify: Reload Serf
+
+- name: Start serf
+  service: name=serf state=started
