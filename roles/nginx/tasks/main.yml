@@ -20,12 +20,14 @@
 
 - name: Nginx Configuration
   copy: src=nginx.conf dest=/usr/local/nginx/conf/
+  notify: Reload Nginx
 
 - name: Varnish Upstream Configuration Script
   copy: src=upstream.sh dest=/usr/local/nginx/ mode=0775
 
 - name: Varnish Upstream Configuration
   shell: /usr/local/nginx/upstream.sh > /usr/local/nginx/conf/varnish.conf
+  notify: Reload Nginx
 
 - name: Start Nginx
   service: name=nginx state=started
