@@ -2,5 +2,9 @@
 - name: Install Varnish
   yum: name=varnish state=installed
 
+- name: Configure Varnish
+  copy: src=default.vcl dest=/etc/varnish/default.vcl
+  notify: Reload Varnish
+
 - name: Start Varnish
   service: name=varnish state=started
