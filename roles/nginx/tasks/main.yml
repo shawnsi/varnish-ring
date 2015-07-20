@@ -18,5 +18,11 @@
 - name: Init Script
   copy: src=etc/init.d/nginx dest=/etc/init.d/nginx mode=0775
 
+- name: Nginx Configuration
+  copy: src={{ item }} dest=/usr/local/nginx/conf/
+  with_items:
+    - nginx.conf
+    - varnish.conf
+
 - name: Start Nginx
   service: name=nginx state=started
