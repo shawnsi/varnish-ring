@@ -11,7 +11,9 @@
     GOPATH: /tmp
 
 - name: Run Cacheproxy
-  script: cacheproxy.sh
+  shell: /tmp/bin/cacheproxy -proxy 80 &
   async: 1
   poll: 0
 
+- name: Add Serf Peers to Cache Ring
+  script: peers.sh
