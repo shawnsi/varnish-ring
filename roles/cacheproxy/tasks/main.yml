@@ -1,0 +1,17 @@
+---
+- name: Install Dependencies
+  yum: name={{ item }} state=present
+  with_items:
+    - git
+    - go
+
+- name: Install Cacheproxy
+  shell: go get github.com/shawnsi/cacheproxy && go install github.com/shawnsi/cacheproxy
+  environment:
+    GOPATH: /tmp
+
+- name: Run Cacheproxy
+  script: cacheproxy.sh
+  async: 1
+  poll: 0
+

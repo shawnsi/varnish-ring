@@ -3,4 +3,4 @@
   roles:
     - { role: serf, ec2_asg: yes }
     - role: varnish
-    - role: nginx
+    - role: cacheproxy
