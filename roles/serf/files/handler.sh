@@ -8,10 +8,16 @@ while read line; do
 
   case $SERF_EVENT in
     member-join)
-      echo curl -X PUT http://localhost:9190/members/${host}:6081
+      curl -X PUT http://localhost:9190/members/${host}:6081
       ;;
     member-leave)
-      echo curl -X DELETE http://localhost:9190/members/${host}:6081
+      curl -X DELETE http://localhost:9190/members/${host}:6081
+      ;;
+    member-failed)
+      curl -X DELETE http://localhost:9190/members/${host}:6081
+      ;;
+    member-reap)
+      curl -X DELETE http://localhost:9190/members/${host}:6081
       ;;
   esac
 done
