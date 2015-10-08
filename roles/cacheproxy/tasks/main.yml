@@ -11,7 +11,7 @@
     GOPATH: /tmp
 
 - name: Run Cacheproxy
-  shell: /tmp/bin/cacheproxy -proxy 80 &
+  shell: /tmp/bin/cacheproxy -proxy 80 -replicas 1 &
   async: 1
   poll: 0
 
